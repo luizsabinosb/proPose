@@ -127,9 +127,9 @@ Consulte **[docs/INDICE.md](docs/INDICE.md)** para acessar toda a documentação
 ## 🎮 Poses Suportadas
 
 1. **Enquadramento** - Centralização do usuário
-2. **Duplo Bíceps (Frente)**
-3. **Duplo Bíceps de Costas**
-4. **Side Chest**
+2. **Duplo Bíceps**
+3. **Side Chest**
+4. **Side Triceps**
 5. **Most Muscular**
 
 ## 🔄 Status do Projeto
