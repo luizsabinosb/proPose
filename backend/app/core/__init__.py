@@ -1,0 +1,4 @@
+"""
+Motor de Visão Computacional
+"""
+

@@ -1,142 +1,149 @@
 # BodyVision - Sistema de Análise de Poses de Fisiculturismo
 
-Sistema de análise de poses de fisiculturismo em tempo real usando visão computacional com MediaPipe e OpenCV.
+Sistema profissional de análise de poses de fisiculturismo em tempo real usando visão computacional e Machine Learning.
 
-## 🎯 Poses Suportadas
+## 🏗️ Arquitetura
 
-- **Duplo Bíceps (Frente)** - Tecla `1`
-- **Enquadramento** - Tecla `2`
-- **Duplo Bíceps de Costas** - Tecla `3`
-- **Side Chest** - Tecla `4`
-- **Most Muscular** - Tecla `5`
+O projeto está organizado em três partes principais:
 
-## 📋 Pré-requisitos
-
-- Python 3.10 ou superior
-- Câmera conectada ao computador
-- macOS, Linux ou Windows
-
-## 🚀 Como Executar
-
-### ⚡ Método Rápido (macOS/Linux)
-
-O projeto possui um script de execução automática. Basta executar:
-
-```bash
-./run.sh
+```
+BodyVision/
+├── backend/          # FastAPI - Motor de visão computacional
+├── interface/        # Flutter - Interface moderna (mobile/desktop/web)
+└── treinamento/      # Scripts de Machine Learning
 ```
 
-### 📝 Método Manual
+## 🚀 Início Rápido
 
-#### Opção 1: Usando o ambiente virtual existente (venv)
-
-O projeto já possui um ambiente virtual configurado com todas as dependências instaladas. Para ativá-lo e executar:
-
-**macOS/Linux:**
-```bash
-# Navegar até a pasta do projeto
-cd /caminho/ate/diretorio/BodyVision
-
-# Ativar o ambiente virtual
-source venv/bin/activate
-
-# Executar o programa
-python BodyVision.py
-
-# Quando terminar, desativar o ambiente (opcional)
-deactivate
-```
-
-**Windows:**
-```bash
-# Navegar até a pasta do projeto
-cd C:\caminho\para\BodyVision
-
-# Ativar o ambiente virtual
-venv\Scripts\activate
-
-# Executar o programa
-python BodyVision.py
-```
-
-#### Opção 2: Criar um novo ambiente virtual
-
-Se preferir criar um novo ambiente virtual:
+### **1. Backend (Recomendado para começar)**
 
 ```bash
+cd backend
+
 # Criar ambiente virtual
 python3 -m venv venv
-
-# Ativar o ambiente virtual
-source venv/bin/activate  # macOS/Linux
-# ou
-venv\Scripts\activate     # Windows
+source venv/bin/activate  # Linux/Mac
+# ou: venv\Scripts\activate  # Windows
 
 # Instalar dependências
 pip install -r requirements.txt
 
-# Executar o programa
-python BodyVision.py
+# Iniciar servidor
+uvicorn app.main:app --reload
 ```
 
-## 🎮 Controles
+**Servidor estará em:** `http://localhost:8000`
+**Documentação:** `http://localhost:8000/docs`
 
-- **Tecla `Q`**: Sair do programa
-- **Tecla `1`**: Modo Enquadramento
-- **Tecla `2`**: Modo Duplo Bíceps (Frente)
-- **Tecla `3`**: Modo Duplo Bíceps de Costas
-- **Tecla `4`**: Modo Side Chest
-- **Tecla `5`**: Modo Most Muscular
+### **2. Testar Backend**
 
-## 📝 Funcionalidades
+```bash
+cd backend
+source venv/bin/activate
+python test_api.py
+```
 
-O sistema analisa sua pose em tempo real e fornece feedback sobre:
-- Posição correta dos braços e ângulos
-- Alinhamento e simetria
-- Altura dos cotovelos
-- Postura geral
-- Expansão do tórax e dorsais
+### **3. Interface Flutter (Opcional)**
 
-## 🔧 Solução de Problemas
+```bash
+cd interface
+flutter pub get
+flutter run
+```
 
-### Câmera não é detectada
-- Verifique se a câmera está conectada e funcionando
-- Tente fechar outros aplicativos que possam estar usando a câmera
+**Nota:** O Flutter precisa estar instalado. Veja **[docs/INSTALAR_FLUTTER.md](docs/INSTALAR_FLUTTER.md)** se necessário.
 
-### Erro ao importar bibliotecas
-- Certifique-se de que o ambiente virtual está ativado
-- Reinstale as dependências: `pip install -r requirements.txt`
+## 📚 Documentação
 
-### Performance lenta
-- Certifique-se de ter uma boa iluminação
-- Fique a uma distância adequada da câmera (1-2 metros)
-- Feche outros aplicativos que possam estar consumindo recursos
+### **Guias de Teste (Comece aqui!):**
 
-## 📦 Dependências
+- **[docs/TESTE_RAPIDO.md](docs/TESTE_RAPIDO.md)** - Teste rápido em 3 passos ⚡
+- **[docs/COMO_TESTAR.md](docs/COMO_TESTAR.md)** - Guia completo de testes
+- **[docs/TESTAR_SEM_FLUTTER.md](docs/TESTAR_SEM_FLUTTER.md)** - Testar só o backend
 
-- `opencv-python`: Processamento de imagens e vídeo
-- `mediapipe`: Detecção de poses humanas
-- `numpy`: Operações matemáticas e arrays
+### **Documentação Técnica:**
+
+- **[docs/README_REFATORACAO.md](docs/README_REFATORACAO.md)** - Guia completo de refatoração
+- **[docs/PLANO_REFATORACAO.md](docs/PLANO_REFATORACAO.md)** - Plano detalhado da migração
+- **[docs/API_CONTRACTS.md](docs/API_CONTRACTS.md)** - Documentação da API
+- **[docs/ARQUITETURA_PROFISSIONAL.md](docs/ARQUITETURA_PROFISSIONAL.md)** - Arquitetura do sistema
+
+### **Índice Completo:**
+
+Consulte **[docs/INDICE.md](docs/INDICE.md)** para acessar toda a documentação.
 
 ## 📁 Estrutura do Projeto
 
-```
-BodyVision/
-├── BodyVision.py          # Arquivo principal e classe da aplicação
-├── pose_evaluator.py      # Classe PoseDetector e métodos de avaliação de poses
-├── ui_helpers.py          # Funções auxiliares para desenho de interface
-├── ui_renderer.py         # Funções de renderização da UI (painéis, feedback)
-├── camera_utils.py        # Utilitários para gerenciamento de câmera
-├── requirements.txt       # Dependências do projeto
-├── run.sh                 # Script de execução rápida
-└── README.md              # Documentação do projeto
-```
+### **Backend (`backend/`)**
+- `app/main.py` - Aplicação FastAPI
+- `app/core/` - Motor de visão computacional
+- `app/api/` - Endpoints REST
+- `app/models/` - Modelos Pydantic
 
-### Descrição dos Módulos
+### **Interface (`interface/`)**
+- `lib/main.dart` - Aplicação Flutter
+- `lib/data/` - Clientes de API
+- `lib/presentation/` - UI e widgets
 
-- **BodyVision.py**: Classe principal `BodyVisionApp` que gerencia o loop da aplicação e coordena os módulos
-- **pose_evaluator.py**: Contém a classe `PoseDetector` com métodos estáticos para avaliar cada tipo de pose
-- **ui_helpers.py**: Funções básicas de desenho (painéis, gradientes, barras de progresso, separadores)
-- **ui_renderer.py**: Funções de alto nível para renderizar componentes completos da interface
-- **camera_utils.py**: Funções para detectar e configurar câmeras disponíveis
+### **Treinamento (`treinamento/`)**
+- Scripts para exportar dados e treinar modelos ML
 
+### **Legado (`bodyvision/`)**
+- Código original (mantido temporariamente para compatibilidade)
+- Será removido após migração completa
+
+## 🎯 Funcionalidades
+
+- ✅ Detecção de poses em tempo real (MediaPipe)
+- ✅ Avaliação automática de postura e simetria
+- ✅ Feedback visual (verde/vermelho)
+- ✅ Machine Learning para melhoria contínua
+- ✅ API REST completa
+- ✅ Interface moderna (Flutter)
+
+## 🔧 Desenvolvimento
+
+### **Adicionar Nova Funcionalidade:**
+
+1. **Backend:** Adicione em `backend/app/`
+2. **Interface:** Adicione em `interface/lib/`
+3. **Documentação:** Atualize `docs/`
+
+### **Estrutura de Pastas:**
+
+- `backend/` - Lógica de negócio e CV
+- `interface/` - UI e experiência do usuário
+- `treinamento/` - Scripts de ML
+- `docs/` - Documentação completa
+
+## 📦 Dependências
+
+### **Backend:**
+- FastAPI, OpenCV, MediaPipe, NumPy, scikit-learn
+
+### **Interface:**
+- Flutter SDK
+
+## 🎮 Poses Suportadas
+
+1. **Enquadramento** - Centralização do usuário
+2. **Duplo Bíceps (Frente)**
+3. **Duplo Bíceps de Costas**
+4. **Side Chest**
+5. **Most Muscular**
+
+## 🔄 Status do Projeto
+
+- ✅ Backend FastAPI funcionando
+- ✅ Motor de CV isolado e testado
+- ✅ API REST completa
+- 🔄 Interface Flutter (em desenvolvimento)
+- ⏳ WebSocket para stream em tempo real (planejado)
+
+## 📄 Licença
+
+Este projeto é de uso educacional e pessoal.
+
+---
+
+**BodyVision Team** - Sistema Profissional de Análise de Poses

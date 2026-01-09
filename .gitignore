@@ -1,6 +1,67 @@
-venv/
+# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+source/
+.venv
+backend/venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 .DS_Store
+
+# Dados coletados (gerados pelo sistema)
+data_collected/
+*.json
+!package.json
+!package-lock.json
+
+# Modelos treinados (gerados pelo sistema)
+models/*.pkl
+
+# Flutter
+interface/.dart_tool/
+interface/.flutter-plugins
+interface/.flutter-plugins-dependencies
+interface/.packages
+interface/.pub-cache/
+interface/.pub/
+interface/build/
+interface/flutter/
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+.cache/
+
+# Sistema
+.DS_Store
+Thumbs.db
