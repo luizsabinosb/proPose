@@ -1,4 +1,4 @@
-# BodyVision - Sistema de Análise de Poses de Fisiculturismo
+# proPose - Sistema de Análise de Poses de Fisiculturismo
 
 Sistema profissional de análise de poses de fisiculturismo em tempo real usando visão computacional e Machine Learning.
 
