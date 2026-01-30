@@ -13,10 +13,15 @@ from .pose_evaluator import PoseDetector
 from .data_collector import DataCollector
 from .ml_evaluator import MLEvaluator
 
+from .pose_metrics_loader import PoseMetricsLoader, get_metrics_loader, reload_metrics
+
 __all__ = [
     # 'BodyVisionApp',  # REMOVIDO - use backend/app/core/cv_service.py
     'PoseDetector',
     'DataCollector',
     'MLEvaluator',
+    'PoseMetricsLoader',
+    'get_metrics_loader',
+    'reload_metrics',
 ]
 

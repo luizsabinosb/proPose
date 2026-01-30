@@ -1,9 +1,12 @@
 """
 Módulo responsável pela detecção e avaliação de poses de fisiculturismo
+Suporta métricas dinâmicas extraídas da poseInfo
 """
 import cv2
 import mediapipe as mp
 import math
+from typing import Optional, Tuple
+from .pose_metrics_loader import get_metrics_loader
 
 
 class PoseDetector:
@@ -52,16 +55,33 @@ class PoseDetector:
         - Cotovelos devem estar elevados acima ou na altura dos ombros
         - Braços contraídos em um ângulo de 30-80 graus para mostrar pico do bíceps
         - Competidor deve mostrar simetria entre ambos os lados
+        
+        Usa métricas dinâmicas da poseInfo se disponíveis, senão usa valores padrão.
         """
         errors = []
+        
+        # Tenta carregar métricas dinâmicas
+        metrics_loader = get_metrics_loader()
+        angle_range = metrics_loader.get_primary_angle_range('double_biceps')
+        
+        # Define intervalo padrão ou usa métrica dinâmica
+        if angle_range:
+            min_angle, max_angle = angle_range
+            # Ajusta para ser tolerante (±5°)
+            min_angle = max(0, min_angle - 5)
+            max_angle = min(180, max_angle + 5)
+        else:
+            # Valores padrão (hardcoded)
+            min_angle, max_angle = 30, 80
+        
         if left_elbow_height > left_shoulder_height:
             errors.append("Cotovelo esquerdo muito baixo - eleve acima ou na altura do ombro")
         if right_elbow_height > right_shoulder_height:
             errors.append("Cotovelo direito muito baixo - eleve acima ou na altura do ombro")
-        if not 30 <= left_angle <= 80:
-            errors.append(f"Angulo do braco esquerdo fora do intervalo (30-80 graus, atual: {left_angle:.0f}°)")
-        if not 30 <= right_angle <= 80:
-            errors.append(f"Angulo do braco direito fora do intervalo (30-80 graus, atual: {right_angle:.0f}°)")
+        if not min_angle <= left_angle <= max_angle:
+            errors.append(f"Angulo do braco esquerdo fora do intervalo ({min_angle:.0f}-{max_angle:.0f} graus, atual: {left_angle:.0f}°)")
+        if not min_angle <= right_angle <= max_angle:
+            errors.append(f"Angulo do braco direito fora do intervalo ({min_angle:.0f}-{max_angle:.0f} graus, atual: {right_angle:.0f}°)")
         if errors:
             return "Posicao incorreta:\n• " + "\n• ".join(errors)
         return "Posicao correta - Excelente duplo bíceps! Bíceps bem definidos e simétricos."
@@ -90,14 +110,29 @@ class PoseDetector:
         - Braço frontal: pode estar flexionado (segurando o punho do posterior) - apenas se visível
         - Pé frontal: joelho estendido (~180°) - apenas se visível
         - Contração máxima de tríceps, deltoide posterior e grande dorsal
+        
+        Usa métricas dinâmicas da poseInfo se disponíveis, senão usa valores padrão.
         """
         errors = []
         
-        # Métrica principal: braço posterior deve estar estendido (intervalo mais tolerante: 140-180°)
-        # Ampliado para ser mais tolerante e evitar falsos negativos
-        if not 120 <= posterior_arm_angle <= 180:
-            if posterior_arm_angle < 120:
-                errors.append(f"Braco posterior deve estar estendido (~120-180°) (atual: {posterior_arm_angle:.0f}°)")
+        # Tenta carregar métricas dinâmicas
+        metrics_loader = get_metrics_loader()
+        angle_range = metrics_loader.get_primary_angle_range('side_triceps')
+        
+        # Define intervalo padrão ou usa métrica dinâmica
+        if angle_range:
+            min_angle, max_angle = angle_range
+            # Ajusta para ser tolerante (±10°)
+            min_angle = max(0, min_angle - 10)
+            max_angle = min(180, max_angle + 10)
+        else:
+            # Valores padrão (hardcoded)
+            min_angle, max_angle = 120, 180
+        
+        # Métrica principal: braço posterior deve estar estendido
+        if not min_angle <= posterior_arm_angle <= max_angle:
+            if posterior_arm_angle < min_angle:
+                errors.append(f"Braco posterior deve estar estendido (~{min_angle:.0f}-{max_angle:.0f}°) (atual: {posterior_arm_angle:.0f}°)")
         
         # Cotovelo posterior deve estar ABAIXO do ombro (valores maiores de Y = abaixo na imagem)
         # No Side Triceps, o cotovelo está naturalmente abaixo do ombro quando o braço está estendido para trás
@@ -136,13 +171,28 @@ class PoseDetector:
         - Braço frontal: cotovelo flexionado (~80-120° - intervalo mais tolerante)
         - Perna frontal: joelho levemente flexionado (~165-170°) - apenas se visível
         - Compressão ativa do peitoral maior
+        
+        Usa métricas dinâmicas da poseInfo se disponíveis, senão usa valores padrão.
         """
         errors = []
         
-        # Métrica principal: braço frontal deve estar contraído (intervalo mais tolerante: 70-130°)
-        # Ampliado para ser mais tolerante e evitar falsos negativos
-        if not 70 <= visible_arm_angle <= 130:
-            errors.append(f"Braco frontal deve estar contraido entre 70-130° (atual: {visible_arm_angle:.0f}°)")
+        # Tenta carregar métricas dinâmicas
+        metrics_loader = get_metrics_loader()
+        angle_range = metrics_loader.get_primary_angle_range('side_chest')
+        
+        # Define intervalo padrão ou usa métrica dinâmica
+        if angle_range:
+            min_angle, max_angle = angle_range
+            # Ajusta para ser tolerante (±10°)
+            min_angle = max(0, min_angle - 10)
+            max_angle = min(180, max_angle + 10)
+        else:
+            # Valores padrão (hardcoded)
+            min_angle, max_angle = 70, 130
+        
+        # Métrica principal: braço frontal deve estar contraído
+        if not min_angle <= visible_arm_angle <= max_angle:
+            errors.append(f"Braco frontal deve estar contraido entre {min_angle:.0f}-{max_angle:.0f}° (atual: {visible_arm_angle:.0f}°)")
         
         # Verifica rotação do tronco (~80-85°)
         # hip_rotation em pixels - idealmente > 15 pixels indica boa rotação

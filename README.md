@@ -2,48 +2,54 @@
 
 Sistema profissional de análise de poses de fisiculturismo em tempo real usando visão computacional e Machine Learning.
 
-## 🏗️ Arquitetura
-
-O projeto está organizado em três partes principais:
+## 🏗️ Estrutura
 
 ```
 BodyVision/
 ├── backend/          # FastAPI - Motor de visão computacional
-├── interface/        # Flutter - Interface moderna (mobile/desktop/web)
-└── treinamento/      # Scripts de Machine Learning
+├── interface/        # Flutter - Interface moderna
+├── treinamento/      # Scripts de Machine Learning
+└── bodyvision/       # Lógica de avaliação de poses
 ```
 
 ## 🚀 Início Rápido
 
-### **1. Backend (Recomendado para começar)**
+### ⚡ Iniciar Tudo de Uma Vez (Recomendado)
+
+```bash
+./iniciar_projeto.sh
+```
+
+Este script:
+- ✅ Verifica e instala dependências
+- ✅ Inicia o backend automaticamente
+- ✅ Inicia a interface Flutter
+- ✅ Configura tudo para você
+
+**Para parar tudo:**
+```bash
+./parar_projeto.sh
+```
+
+Ou use `Ctrl+C` no terminal onde rodou `iniciar_projeto.sh`
+
+---
+
+### 🔧 Início Manual (Alternativa)
+
+#### 1. Backend
 
 ```bash
 cd backend
-
-# Criar ambiente virtual
 python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# ou: venv\Scripts\activate  # Windows
-
-# Instalar dependências
-pip install -r requirements.txt
-
-# Iniciar servidor
-uvicorn app.main:app --reload
-```
-
-**Servidor estará em:** `http://localhost:8000`
-**Documentação:** `http://localhost:8000/docs`
-
-### **2. Testar Backend**
-
-```bash
-cd backend
 source venv/bin/activate
-python test_api.py
+pip install -r requirements.txt
+./iniciar_backend.sh
 ```
 
-### **3. Interface Flutter (Opcional)**
+Servidor: `http://localhost:8000` | Docs: `http://localhost:8000/docs`
+
+#### 2. Interface Flutter
 
 ```bash
 cd interface
@@ -51,78 +57,23 @@ flutter pub get
 flutter run
 ```
 
-**Nota:** O Flutter precisa estar instalado. Veja **[docs/INSTALAR_FLUTTER.md](docs/INSTALAR_FLUTTER.md)** se necessário.
+## 📚 Treinamento da IA
 
-## 📚 Documentação
+### Processar poseInfo (Textos e Imagens de Referência)
+```bash
+cd treinamento
+python3 process_pose_info.py
+```
+Extrai métricas dos arquivos `.pages` e processa imagens de referência. As métricas são usadas automaticamente nas regras de avaliação.
 
-### **Guias de Teste (Comece aqui!):**
+### Consolidar e Treinar
+```bash
+cd treinamento
+python3 consolidate_training_data.py
+python3 train_model.py
+```
 
-- **[docs/TESTE_RAPIDO.md](docs/TESTE_RAPIDO.md)** - Teste rápido em 3 passos ⚡
-- **[docs/COMO_TESTAR.md](docs/COMO_TESTAR.md)** - Guia completo de testes
-- **[docs/TESTAR_SEM_FLUTTER.md](docs/TESTAR_SEM_FLUTTER.md)** - Testar só o backend
-
-### **Documentação Técnica:**
-
-- **[docs/README_REFATORACAO.md](docs/README_REFATORACAO.md)** - Guia completo de refatoração
-- **[docs/PLANO_REFATORACAO.md](docs/PLANO_REFATORACAO.md)** - Plano detalhado da migração
-- **[docs/API_CONTRACTS.md](docs/API_CONTRACTS.md)** - Documentação da API
-- **[docs/ARQUITETURA_PROFISSIONAL.md](docs/ARQUITETURA_PROFISSIONAL.md)** - Arquitetura do sistema
-
-### **Índice Completo:**
-
-Consulte **[docs/INDICE.md](docs/INDICE.md)** para acessar toda a documentação.
-
-## 📁 Estrutura do Projeto
-
-### **Backend (`backend/`)**
-- `app/main.py` - Aplicação FastAPI
-- `app/core/` - Motor de visão computacional
-- `app/api/` - Endpoints REST
-- `app/models/` - Modelos Pydantic
-
-### **Interface (`interface/`)**
-- `lib/main.dart` - Aplicação Flutter
-- `lib/data/` - Clientes de API
-- `lib/presentation/` - UI e widgets
-
-### **Treinamento (`treinamento/`)**
-- Scripts para exportar dados e treinar modelos ML
-
-### **Legado (`bodyvision/`)**
-- Código original (mantido temporariamente para compatibilidade)
-- Será removido após migração completa
-
-## 🎯 Funcionalidades
-
-- ✅ Detecção de poses em tempo real (MediaPipe)
-- ✅ Avaliação automática de postura e simetria
-- ✅ Feedback visual (verde/vermelho)
-- ✅ Machine Learning para melhoria contínua
-- ✅ API REST completa
-- ✅ Interface moderna (Flutter)
-
-## 🔧 Desenvolvimento
-
-### **Adicionar Nova Funcionalidade:**
-
-1. **Backend:** Adicione em `backend/app/`
-2. **Interface:** Adicione em `interface/lib/`
-3. **Documentação:** Atualize `docs/`
-
-### **Estrutura de Pastas:**
-
-- `backend/` - Lógica de negócio e CV
-- `interface/` - UI e experiência do usuário
-- `treinamento/` - Scripts de ML
-- `docs/` - Documentação completa
-
-## 📦 Dependências
-
-### **Backend:**
-- FastAPI, OpenCV, MediaPipe, NumPy, scikit-learn
-
-### **Interface:**
-- Flutter SDK
+Veja `treinamento/README.md` para mais opções (coleta manual, web scraping, etc.).
 
 ## 🎮 Poses Suportadas
 
@@ -132,18 +83,62 @@ Consulte **[docs/INDICE.md](docs/INDICE.md)** para acessar toda a documentação
 4. **Side Triceps**
 5. **Most Muscular**
 
-## 🔄 Status do Projeto
+## 📁 Componentes Principais
 
-- ✅ Backend FastAPI funcionando
-- ✅ Motor de CV isolado e testado
-- ✅ API REST completa
-- 🔄 Interface Flutter (em desenvolvimento)
-- ⏳ WebSocket para stream em tempo real (planejado)
+### Backend (`backend/`)
+- `app/main.py` - Aplicação FastAPI
+- `app/core/cv_service.py` - Motor de visão computacional
+- `app/api/v1/pose.py` - Endpoints REST
 
-## 📄 Licença
+### Interface (`interface/`)
+- `lib/main.dart` - Aplicação Flutter
+- `lib/presentation/` - UI e widgets
 
-Este projeto é de uso educacional e pessoal.
+### Treinamento (`treinamento/`)
+- `train_model.py` - Treina modelos ML
+- `export_training_data.py` - Exporta dados coletados
+- `image_processor.py` - Processa imagens/vídeos
+- `web_scraper.py` - Coleta dados de artigos web
+- `consolidate_training_data.py` - Consolida todas as fontes
+
+### Lógica de Poses (`bodyvision/`)
+- `pose_evaluator.py` - Regras de avaliação de cada pose
+- `ml_evaluator.py` - Integração com modelos ML
+- `data_collector.py` - Coleta e validação de dados
+
+## 🔧 Dependências
+
+### Backend
+- FastAPI, OpenCV, MediaPipe, NumPy, scikit-learn, beautifulsoup4
+
+### Interface
+- Flutter SDK
+
+## 🧪 Testar o Sistema
+
+```bash
+./testar_tudo.sh
+```
+
+Verifica estrutura, Flutter e conexão com backend.
+
+## 🔧 Troubleshooting
+
+### Backend não conecta
+- Verifique se está rodando: `curl http://localhost:8000/health`
+- Se usar Flutter Web, use `localhost` no `api_client.dart`
+- Backend deve usar `--host 0.0.0.0` para aceitar conexões externas
+
+### Flutter não encontra backend
+- Edite `interface/lib/data/api/api_client.dart` com o IP correto
+- Para web: use `http://localhost:8000`
+- Para mobile: use seu IP local (ex: `http://192.168.0.134:8000`)
+
+## 📖 Documentação Adicional
+
+- `treinamento/README.md` - Guia de treinamento básico
+- `treinamento/README_TREINAMENTO_AVANCADO.md` - Treinamento avançado com web scraping
 
 ---
 
-**BodyVision Team** - Sistema Profissional de Análise de Poses
+**BodyVision** - Sistema Profissional de Análise de Poses

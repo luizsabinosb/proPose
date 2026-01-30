@@ -19,10 +19,18 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 def load_training_data(data_file="data_for_training.json"):
     """Carrega dados de treinamento do arquivo JSON"""
-    if not Path(data_file).exists():
-        print(f"❌ Arquivo {data_file} não encontrado!")
-        print("💡 Execute primeiro: python export_training_data.py")
-        return None, None, None
+    # Tenta encontrar arquivo na raiz ou em treinamento/
+    data_path = Path(data_file)
+    if not data_path.exists():
+        # Tenta na raiz do projeto
+        data_path = Path(__file__).parent.parent / data_file
+        if not data_path.exists():
+            print(f"❌ Arquivo {data_file} não encontrado!")
+            print("💡 Execute primeiro:")
+            print("   - python export_training_data.py (dados manuais)")
+            print("   - python consolidate_training_data.py (consolidar todas as fontes)")
+            return None, None, None
+    data_file = str(data_path)
     
     with open(data_file, 'r', encoding='utf-8') as f:
         data = json.load(f)

@@ -1,38 +1,93 @@
-# Scripts de Treinamento - BodyVision
+# 🎓 Treinamento da IA
 
-Este diretório contém os scripts para treinamento de modelos de Machine Learning.
+Este diretório contém scripts para treinar modelos de Machine Learning que melhoram a avaliação de poses.
 
-## Scripts
+## 📋 Pipeline Básico
 
-- **`export_training_data.py`** - Exporta dados coletados para formato de treinamento
-- **`train_model.py`** - Treina modelos ML usando os dados exportados
+### 1. Coleta de Dados
 
-## Como Usar
+**Opção A: Coleta Manual**
+- Durante o uso do sistema, marque poses como corretas/incorretas
+- Dados são salvos automaticamente em `data_collected/`
 
-### 1. Coletar Dados
+**Opção B: Processamento de Imagens/Vídeos**
+```bash
+python image_processor.py
+```
+- Processa imagens ou vídeos
+- Extrai landmarks automaticamente
+- Gera labels usando regras atuais
 
-Durante o uso do sistema, colete dados usando os controles:
-- `V` - Marcar como CORRETO
-- `X` - Marcar como INCORRETO
+**Opção C: Web Scraping**
+```bash
+python web_scraper.py
+```
+- Coleta artigos sobre poses
+- Baixa imagens de exemplos
+- Veja `README_TREINAMENTO_AVANCADO.md` para detalhes
+
+**Opção D: Processar poseInfo (Textos e Imagens de Referência)**
+```bash
+python process_pose_info.py
+```
+- Extrai texto dos arquivos `.pages` na pasta `poseInfo/`
+- Processa as imagens de referência de cada pose
+- Extrai landmarks e métricas do texto
+- Gera dados de treinamento com label "correct" (imagens de referência)
 
 ### 2. Exportar Dados
 
 ```bash
-cd treinamento
 python export_training_data.py
 ```
 
-Isso cria o arquivo `data_for_training.json` na raiz do projeto.
+Exporta dados coletados manualmente para `data_for_training.json`.
 
-### 3. Treinar Modelos
+### 3. Consolidar Dados (se usar múltiplas fontes)
+
+```bash
+python consolidate_training_data.py
+```
+
+Combina dados de todas as fontes em um único arquivo.
+
+### 4. Treinar Modelo
 
 ```bash
 python train_model.py
 ```
 
-Os modelos treinados serão salvos em `models/` na raiz do projeto.
+Escolha:
+- **1**: Modelo geral (todas as poses)
+- **2**: Modelos individuais (um por pose)
+- **3**: Ambos
+
+Modelos são salvos em `models/` na raiz do projeto.
+
+## 📊 Requisitos de Dados
+
+- **Mínimo**: 100 amostras por pose (50 corretas + 50 incorretas)
+- **Ideal**: 200+ de cada tipo
+- **Total**: 500-1000+ amostras para bons resultados
+
+## 🎯 Como Funciona
+
+1. **Coleta**: Dados são coletados com landmarks e labels
+2. **Exportação**: Dados são formatados para treinamento
+3. **Treinamento**: Modelo aprende padrões dos dados
+4. **Uso**: Sistema usa modelo para melhorar feedbacks
+
+O modelo é combinado com as regras atuais para feedbacks mais precisos.
+
+## 📁 Arquivos
+
+- `train_model.py` - Treina modelos ML
+- `export_training_data.py` - Exporta dados coletados
+- `image_processor.py` - Processa imagens/vídeos
+- `web_scraper.py` - Coleta dados de artigos web
+- `process_pose_info.py` - Processa textos e imagens de referência da pasta poseInfo
+- `consolidate_training_data.py` - Consolida todas as fontes
 
 ---
 
-**Nota:** Os dados coletados devem estar em `data_collected/` na raiz do projeto.
-
+Para treinamento avançado com web scraping, veja `README_TREINAMENTO_AVANCADO.md`.

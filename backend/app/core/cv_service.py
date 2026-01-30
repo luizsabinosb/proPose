@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
 from bodyvision.pose_evaluator import PoseDetector
 from bodyvision.ml_evaluator import MLEvaluator
+from bodyvision.pose_metrics_loader import get_metrics_loader
 
 
 class CVService:
@@ -42,6 +43,17 @@ class CVService:
         if self.ml_evaluator and not self.ml_evaluator.models_loaded:
             print("⚠️ Modelos ML não encontrados. Usando apenas regras.")
             self.use_ml = False
+        
+        # Carrega métricas dinâmicas da poseInfo (se disponíveis)
+        try:
+            metrics_loader = get_metrics_loader()
+            if metrics_loader.metrics_cache:
+                print(f"✅ Métricas dinâmicas carregadas para {len(metrics_loader.metrics_cache)} pose(s)")
+            else:
+                print("ℹ️ Usando métricas padrão (hardcoded)")
+        except Exception as e:
+            print(f"⚠️ Erro ao carregar métricas dinâmicas: {e}")
+            print("   Usando métricas padrão (hardcoded)")
     
     def process_frame(
         self, 
