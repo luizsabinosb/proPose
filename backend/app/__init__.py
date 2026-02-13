@@ -1,4 +1,4 @@
 """
-Backend BodyVision - FastAPI
+Backend ProPosing - FastAPI
 """
 

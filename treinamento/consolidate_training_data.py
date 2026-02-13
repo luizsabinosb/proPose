@@ -10,7 +10,7 @@ import sys
 # Adiciona path do projeto
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from bodyvision.data_collector import DataCollector
+from proposing.data_collector import DataCollector
 
 
 def load_json_data(file_path: Path) -> List[Dict]:
@@ -38,23 +38,31 @@ def consolidate_all_sources(output_file: str = "data_for_training.json") -> int:
     print("🔄 Consolidando Dados de Treinamento")
     print("="*60)
     
+    project_root = Path(__file__).resolve().parent.parent
+    ml_data_dir = project_root / "ml" / "data"
+    processed_dir = ml_data_dir / "processed"
+    temp_manual_path = project_root / "temp_manual.json"
+    output_path = Path(output_file)
+    if not output_path.is_absolute():
+        output_path = project_root / output_path
+
     all_samples = []
     
     # 1. Dados coletados manualmente (via DataCollector)
     print("\n1️⃣ Carregando dados coletados manualmente...")
     collector = DataCollector()
-    manual_data = collector.export_for_training("temp_manual.json")
-    if Path("temp_manual.json").exists():
-        manual_samples = load_json_data(Path("temp_manual.json"))
+    collector.export_for_training(temp_manual_path)
+    if temp_manual_path.exists():
+        manual_samples = load_json_data(temp_manual_path)
         all_samples.extend(manual_samples)
         print(f"   ✅ {len(manual_samples)} amostras manuais")
-        Path("temp_manual.json").unlink()  # Remove temporário
+        temp_manual_path.unlink()  # Remove temporário
     else:
         print("   ⚠️ Nenhum dado manual encontrado")
     
     # 2. Dados de web scraping (processados)
     print("\n2️⃣ Carregando dados de web scraping...")
-    web_data_path = Path("data_collected/processed/web_training_data.json")
+    web_data_path = processed_dir / "web_training_data.json"
     if web_data_path.exists():
         web_samples = load_json_data(web_data_path)
         all_samples.extend(web_samples)
@@ -64,7 +72,6 @@ def consolidate_all_sources(output_file: str = "data_for_training.json") -> int:
     
     # 3. Dados de processamento de imagens/vídeos
     print("\n3️⃣ Carregando dados de imagens/vídeos processados...")
-    processed_dir = Path("data_collected/processed")
     if processed_dir.exists():
         for json_file in processed_dir.glob("*.json"):
             if json_file.name not in ["web_training_data.json"]:  # Evita duplicar
@@ -74,7 +81,7 @@ def consolidate_all_sources(output_file: str = "data_for_training.json") -> int:
     
     # 4. Dados de poseInfo (referências de poses)
     print("\n4️⃣ Carregando dados de poseInfo...")
-    pose_info_path = Path("data_collected/processed/pose_info_training_data.json")
+    pose_info_path = processed_dir / "pose_info_training_data.json"
     if pose_info_path.exists():
         pose_info_samples = load_json_data(pose_info_path)
         all_samples.extend(pose_info_samples)
@@ -135,7 +142,6 @@ def consolidate_all_sources(output_file: str = "data_for_training.json") -> int:
         print(f"     {source}: {count}")
     
     # 7. Salva arquivo consolidado
-    output_path = Path(output_file)
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(unique_samples, f, indent=2, ensure_ascii=False)
     

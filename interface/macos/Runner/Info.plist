@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSCameraUsageDescription</key>
+	<string>ProPosing precisa da câmera para análise de poses em tempo real.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>O plugin de câmera requer esta permissão. ProPosing usa apenas a câmera para fotos.</string>
 </dict>
 </plist>

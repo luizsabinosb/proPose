@@ -131,7 +131,7 @@ def test_evaluate_pose():
 def main():
     """Executa todos os testes"""
     print("=" * 60)
-    print("🧪 Testando BodyVision API")
+    print("🧪 Testando ProPosing API")
     print("=" * 60)
     
     # Verifica se servidor está rodando
@@ -139,10 +139,8 @@ def main():
         print("\n❌ Servidor não está rodando!")
         print("\n📝 Para iniciar o servidor:")
         print("   cd backend")
-        print("   python -m venv venv")
-        print("   source venv/bin/activate  # Linux/Mac")
-        print("   pip install -r requirements.txt")
-        print("   uvicorn app.main:app --reload")
+        print("   pip3 install -r requirements.txt")
+        print("   python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000")
         sys.exit(1)
     
     # Testa endpoints

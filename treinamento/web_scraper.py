@@ -15,14 +15,15 @@ import time
 class WebScraper:
     """Coleta informações sobre poses de fisiculturismo de artigos web"""
     
-    def __init__(self, output_dir="data_collected/web"):
+    def __init__(self, output_dir=None):
         """
         Inicializa o scraper
         
         Args:
             output_dir: Diretório onde salvar dados coletados
         """
-        self.output_dir = Path(output_dir)
+        project_root = Path(__file__).resolve().parent.parent
+        self.output_dir = Path(output_dir) if output_dir else project_root / "ml" / "data" / "web"
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.session = requests.Session()
         self.session.headers.update({

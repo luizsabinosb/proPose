@@ -1,6 +1,6 @@
 """
 Serviço de Visão Computacional
-Refatorado de bodyvision/app.py - mantém toda lógica de CV intacta
+Refatorado de proposing/app.py - mantém toda lógica de CV intacta
 """
 import cv2
 import numpy as np
@@ -12,9 +12,9 @@ from pathlib import Path
 # Adiciona path do projeto original para importar módulos
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
-from bodyvision.pose_evaluator import PoseDetector
-from bodyvision.ml_evaluator import MLEvaluator
-from bodyvision.pose_metrics_loader import get_metrics_loader
+from proposing.pose_evaluator import PoseDetector
+from proposing.ml_evaluator import MLEvaluator
+from proposing.pose_metrics_loader import get_metrics_loader
 
 
 class CVService:
@@ -226,7 +226,7 @@ class CVService:
     ) -> str:
         """
         Avalia a pose de acordo com o modo selecionado
-        Mantém exatamente a mesma lógica de bodyvision/app.py
+        Mantém exatamente a mesma lógica de proposing/app.py
         """
         angle_left = angles.get("left_arm", 0)
         angle_right = angles.get("right_arm", 0)

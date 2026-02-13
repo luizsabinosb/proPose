@@ -57,7 +57,7 @@ python web_scraper.py
 1. O script oferece URLs conhecidas (ex: BarBend)
 2. Você pode adicionar mais URLs
 3. Escolhe se quer baixar imagens
-4. O script faz scraping e salva em `data_collected/web/`
+4. O script faz scraping e salva em `ml/data/web/`
 
 ### Resultado:
 - `scraped_articles.json` - Metadados dos artigos
@@ -150,7 +150,7 @@ python web_scraper.py
 # 2. Processa imagens baixadas
 python image_processor.py
 # Escolha: 1 (diretório de imagens)
-# Caminho: data_collected/web/images/
+# Caminho: ml/data/web/images/
 # Modo: side_chest
 # Label: (auto)
 
@@ -205,18 +205,19 @@ O `DataCollector` já valida qualidade automaticamente:
 ## 📁 Estrutura de Arquivos
 
 ```
-BodyVision/
+ProPosing/
 ├── treinamento/
 │   ├── web_scraper.py              # Scraping de artigos
 │   ├── image_processor.py          # Processamento de imagens/vídeos
 │   ├── consolidate_training_data.py # Consolidação
 │   └── train_model.py              # Treinamento
-├── data_collected/
-│   ├── web/                        # Dados de web scraping
-│   │   ├── scraped_articles.json
-│   │   └── images/
-│   └── processed/                  # Dados processados
-│       └── web_training_data.json
+├── ml/
+│   └── data/
+│       ├── web/                    # Dados de web scraping
+│       │   ├── scraped_articles.json
+│       │   └── images/
+│       └── processed/              # Dados processados
+│           └── web_training_data.json
 └── data_for_training.json          # Arquivo consolidado final
 ```
 

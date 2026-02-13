@@ -13,21 +13,22 @@ from datetime import datetime
 # Adiciona path do projeto
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from bodyvision.pose_evaluator import PoseDetector, MLEvaluator
-from bodyvision.data_collector import DataCollector
+from proposing.pose_evaluator import PoseDetector, MLEvaluator
+from proposing.data_collector import DataCollector
 
 
 class ImageProcessor:
     """Processa imagens/vídeos e gera dados de treinamento"""
     
-    def __init__(self, output_dir="data_collected/processed"):
+    def __init__(self, output_dir=None):
         """
         Inicializa o processador
         
         Args:
             output_dir: Diretório onde salvar dados processados
         """
-        self.output_dir = Path(output_dir)
+        project_root = Path(__file__).resolve().parent.parent
+        self.output_dir = Path(output_dir) if output_dir else project_root / "ml" / "data" / "processed"
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.detector = PoseDetector(static_image_mode=True)
         self.data_collector = DataCollector()

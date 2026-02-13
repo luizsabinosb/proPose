@@ -8,7 +8,17 @@
 PRODUCT_NAME = ProPosing
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.bodyvision
+PRODUCT_BUNDLE_IDENTIFIER = com.example.proposing
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
+
+// Desabilita Code Sign (evita erro resource fork no macOS)
+CODE_SIGN_IDENTITY = -
+CODE_SIGNING_REQUIRED = NO
+CODE_SIGNING_ALLOWED = NO
+
+// Permissões de privacidade (obrigatório no macOS - TCC)
+// Sem elas o app crasha ao acessar câmera/microfone
+INFOPLIST_KEY_NSCameraUsageDescription = "ProPosing usa a câmera para análise de poses em tempo real."
+INFOPLIST_KEY_NSMicrophoneUsageDescription = "O framework de câmera requer esta permissão. O app pode gravar vídeo com áudio."

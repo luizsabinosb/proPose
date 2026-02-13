@@ -8,7 +8,7 @@ Este diretório contém scripts para treinar modelos de Machine Learning que mel
 
 **Opção A: Coleta Manual**
 - Durante o uso do sistema, marque poses como corretas/incorretas
-- Dados são salvos automaticamente em `data_collected/`
+- Dados são salvos automaticamente em `ml/data/`
 
 **Opção B: Processamento de Imagens/Vídeos**
 ```bash
@@ -30,7 +30,7 @@ python web_scraper.py
 ```bash
 python process_pose_info.py
 ```
-- Extrai texto dos arquivos `.pages` na pasta `poseInfo/`
+- Extrai texto dos arquivos `.pages` na pasta `ml/pose_info/`
 - Processa as imagens de referência de cada pose
 - Extrai landmarks e métricas do texto
 - Gera dados de treinamento com label "correct" (imagens de referência)
@@ -62,7 +62,7 @@ Escolha:
 - **2**: Modelos individuais (um por pose)
 - **3**: Ambos
 
-Modelos são salvos em `models/` na raiz do projeto.
+Modelos são salvos em `ml/models/` na raiz do projeto.
 
 ## 📊 Requisitos de Dados
 
@@ -85,7 +85,7 @@ O modelo é combinado com as regras atuais para feedbacks mais precisos.
 - `export_training_data.py` - Exporta dados coletados
 - `image_processor.py` - Processa imagens/vídeos
 - `web_scraper.py` - Coleta dados de artigos web
-- `process_pose_info.py` - Processa textos e imagens de referência da pasta poseInfo
+- `process_pose_info.py` - Processa textos e imagens de referência da pasta ml/pose_info
 - `consolidate_training_data.py` - Consolida todas as fontes
 
 ---

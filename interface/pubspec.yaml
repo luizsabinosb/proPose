@@ -1,5 +1,5 @@
-name: bodyvision
-description: BodyVision - Sistema de Análise de Poses de Fisiculturismo
+name: proposing
+description: ProPosing - Sistema de Análise de Poses de Fisiculturismo
 version: 1.0.0
 publish_to: 'none'
 
@@ -11,7 +11,13 @@ dependencies:
     sdk: flutter
   http: ^1.1.0
   camera: ^0.10.5
+  camera_macos: ^0.0.9
   provider: ^6.1.0
+
+# Usa versão patcheada local para eliminar warnings de APIs deprecadas (AVCaptureDevice)
+dependency_overrides:
+  camera_macos:
+    path: packages/camera_macos
 
 dev_dependencies:
   flutter_test:

@@ -37,7 +37,7 @@ def load_training_data(data_file="data_for_training.json"):
     
     if len(data) == 0:
         print("❌ Nenhum dado de treinamento encontrado!")
-        print("💡 Colete dados primeiro usando o BodyVision (teclas V, X)")
+        print("💡 Colete dados primeiro usando o ProPosing (teclas V, X)")
         return None, None, None
     
     print(f"📊 Carregados {len(data)} amostras de treinamento")
@@ -221,8 +221,8 @@ def train_model(X, y, model_type='random_forest', save_path='pose_classifier.pkl
     print(f"Real Incorrect    {cm[0][0]:8d}  {cm[0][1]:7d}")
     print(f"     Correct      {cm[1][0]:8d}  {cm[1][1]:7d}")
     
-    # Salva modelo (cria diretório models/ na raiz do projeto)
-    models_dir = Path(__file__).parent.parent / "models"
+    # Salva modelo (cria diretório ml/models na raiz do projeto)
+    models_dir = Path(__file__).resolve().parent.parent / "ml" / "models"
     models_dir.mkdir(exist_ok=True)
     save_path_full = models_dir / Path(save_path).name
     joblib.dump(model, save_path_full)
@@ -293,9 +293,9 @@ def main():
     
     print("\n✅ Treinamento concluído!")
     print("\n💡 Próximos passos:")
-    print("   1. Os modelos estão salvos em models/")
-    print("   2. O BodyVision usará automaticamente os modelos treinados")
-    print("   3. Rode: python BodyVision.py para usar com ML")
+    print("   1. Os modelos estão salvos em ml/models/")
+    print("   2. O ProPosing usará automaticamente os modelos treinados")
+    print("   3. Rode o backend para usar com ML")
 
 
 if __name__ == "__main__":

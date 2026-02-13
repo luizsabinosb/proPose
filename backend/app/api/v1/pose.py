@@ -187,7 +187,9 @@ async def evaluate_pose(request: PoseEvaluateRequest):
             status=status,
             landmarks=landmarks,
             annotated_image=annotated_image_b64,
-            processing_time_ms=processing_time_ms
+            processing_time_ms=processing_time_ms,
+            image_width=w,
+            image_height=h,
         )
     
     except ValueError as e:

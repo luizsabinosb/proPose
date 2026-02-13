@@ -37,13 +37,13 @@ backend/venv/
 .DS_Store
 
 # Dados coletados (gerados pelo sistema)
-data_collected/
+ml/data/
 *.json
 !package.json
 !package-lock.json
 
 # Modelos treinados (gerados pelo sistema)
-models/*.pkl
+ml/models/*.pkl
 
 # Flutter
 interface/.dart_tool/
@@ -55,12 +55,33 @@ interface/.pub/
 interface/build/
 interface/flutter/
 
+# Build executável
+build_app/
+dist/
+*.spec~
+
 # Logs
 *.log
+.backend.log
+.backend_macos.log
+
+# Runtime (PIDs)
+.backend.pid
+.backend_macos_pid
+.flutter_macos_pid
+*.pid
+
+# Certificados/hashes gerados (não versionar)
+certificado_hash_*.txt
 
 # Arquivos temporários
 *.tmp
 .cache/
+
+# Limpeza da raiz do repositório
+/build/
+/dist/
+/__pycache__/
 
 # Sistema
 .DS_Store

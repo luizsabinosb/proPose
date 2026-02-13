@@ -1,5 +1,5 @@
 """
-Script para processar informações de poses da pasta poseInfo
+Script para processar informações de poses da pasta ml/pose_info
 Extrai texto de arquivos .pages e processa imagens para treinamento
 """
 import cv2
@@ -17,11 +17,11 @@ import xml.etree.ElementTree as ET
 # Adiciona path do projeto
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from bodyvision.pose_evaluator import PoseDetector
+from proposing.pose_evaluator import PoseDetector
 
 
 class PoseInfoProcessor:
-    """Processa informações de poses da pasta poseInfo"""
+    """Processa informações de poses da pasta ml/pose_info"""
     
     # Mapeamento de nomes de pastas para modos de pose
     POSE_MAPPING = {
@@ -31,7 +31,7 @@ class PoseInfoProcessor:
         'Most Muscular': 'most_muscular'
     }
     
-    def __init__(self, pose_info_dir: str = "poseInfo", output_dir: str = "data_collected/processed"):
+    def __init__(self, pose_info_dir: Optional[str] = None, output_dir: Optional[str] = None):
         """
         Inicializa o processador
         
@@ -39,8 +39,9 @@ class PoseInfoProcessor:
             pose_info_dir: Diretório com informações de poses
             output_dir: Diretório onde salvar dados processados
         """
-        self.pose_info_dir = Path(pose_info_dir)
-        self.output_dir = Path(output_dir)
+        project_root = Path(__file__).resolve().parent.parent
+        self.pose_info_dir = Path(pose_info_dir) if pose_info_dir else project_root / "ml" / "pose_info"
+        self.output_dir = Path(output_dir) if output_dir else project_root / "ml" / "data" / "processed"
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.detector = PoseDetector(static_image_mode=True)
     
@@ -347,7 +348,7 @@ class PoseInfoProcessor:
     
     def process_all_poses(self) -> List[Dict]:
         """
-        Processa todas as poses na pasta poseInfo
+        Processa todas as poses na pasta ml/pose_info
         
         Returns:
             Lista de todas as amostras processadas
@@ -361,7 +362,7 @@ class PoseInfoProcessor:
         print("="*60)
         print(f"📁 Diretório: {self.pose_info_dir}")
         print("\n📋 Estrutura esperada:")
-        print("   poseInfo/")
+        print("   ml/pose_info/")
         print("   ├── Double Biceps/     (arquivos .pages + imagens)")
         print("   ├── Side Chest/         (arquivos .pages + imagens)")
         print("   ├── Side Triceps/       (arquivos .pages + imagens)")
@@ -458,7 +459,7 @@ def main():
         print(f"   3. Execute: python train_model.py")
     else:
         print("\n⚠️ Nenhuma amostra processada")
-        print("💡 Verifique se a pasta poseInfo existe e contém imagens válidas")
+        print("💡 Verifique se a pasta ml/pose_info existe e contém imagens válidas")
 
 
 if __name__ == "__main__":

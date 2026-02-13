@@ -1,12 +1,12 @@
 """
-FastAPI Application - BodyVision Backend
+FastAPI Application - ProPosing Backend
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1 import pose
 
 app = FastAPI(
-    title="BodyVision API",
+    title="ProPosing API",
     description="API para análise de poses de fisiculturismo",
     version="1.0.0"
 )
@@ -28,7 +28,7 @@ app.include_router(pose.router, prefix="/api/v1/pose", tags=["pose"])
 async def root():
     """Endpoint raiz"""
     return {
-        "message": "BodyVision API",
+        "message": "ProPosing API",
         "version": "1.0.0",
         "docs": "/docs"
     }

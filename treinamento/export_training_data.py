@@ -4,15 +4,16 @@ Script para exportar dados coletados em formato adequado para treinamento
 import sys
 from pathlib import Path
 
-# Adiciona diretório pai ao path para importar bodyvision
+# Adiciona diretório pai ao path para importar proposing
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from bodyvision.data_collector import DataCollector
+from proposing.data_collector import DataCollector
 
 
 def main():
     """Exporta dados coletados para formato de treinamento"""
     collector = DataCollector()
+    project_root = Path(__file__).resolve().parent.parent
     
     print("📊 Estatísticas da Coleta:")
     print("-" * 50)
@@ -31,7 +32,7 @@ def main():
     print("\n" + "-" * 50)
     print("📤 Exportando dados para treinamento...")
     
-    output_file = "data_for_training.json"
+    output_file = project_root / "data_for_training.json"
     num_exported = collector.export_for_training(output_file)
     
     print(f"✅ Exportadas {num_exported} amostras válidas para '{output_file}'")

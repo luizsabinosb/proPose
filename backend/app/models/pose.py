@@ -41,6 +41,8 @@ class PoseEvaluateResponse(BaseModel):
     landmarks: List[LandmarkPoint] = Field(default_factory=list, description="Landmarks detectados")
     annotated_image: Optional[str] = Field(None, description="Imagem anotada em Base64")
     processing_time_ms: int = Field(..., description="Tempo de processamento em milissegundos")
+    image_width: Optional[int] = Field(None, description="Largura da imagem processada")
+    image_height: Optional[int] = Field(None, description="Altura da imagem processada")
     timestamp: datetime = Field(default_factory=datetime.now, description="Timestamp da avaliação")
 
 
